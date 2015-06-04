@@ -1,16 +1,31 @@
 SpotifyWebApi = function(config) {
-  var SpotifyWebApi = Npm.require('spotify-web-api');
+  config = config || {};
+  var SpotifyWebApi = Npm.require('spotify-web-api-node');
   var api = new SpotifyWebApi();
 
   // Set the access token + refresh token (either provided, or retrieved from account)
   setAccessTokens(api, config);
 
+  // Whitelist functions to be wrapped. This is ugly -- any alternatives?
+  SpotifyWebApi.whitelistedFunctionNames = ['getCredentials','resetCredentials','setClientId','setClientSecret',
+    'setAccessToken','setRefreshToken','setRedirectURI','getRedirectURI','getClientId','getClientSecret',
+    'getAccessToken','getRefreshToken','resetClientId','resetClientSecret','resetAccessToken','resetRefreshToken',
+    'resetRedirectURI','getTrack','getTracks','getAlbum','getAlbums','getArtist','getArtists','searchAlbums',
+    'searchArtists','searchTracks','searchPlaylists','getArtistAlbums','getAlbumTracks','getArtistTopTracks',
+    'getArtistRelatedArtists','getUser','getMe','getUserPlaylists','getPlaylist','getPlaylistTracks','createPlaylist',
+    'followPlaylist','unfollowPlaylist','changePlaylistDetails','addTracksToPlaylist','removeTracksFromPlaylist',
+    'removeTracksFromPlaylistByPosition','replaceTracksInPlaylist','reorderTracksInPlaylist','clientCredentialsGrant',
+    'authorizationCodeGrant','refreshAccessToken','createAuthorizeURL','getMySavedTracks','containsMySavedTracks',
+    'removeFromMySavedTracks','addToMySavedTracks','followUsers','followArtists','unfollowUsers','unfollowArtists',
+    'isFollowingUsers','areFollowingPlaylist','isFollowingArtists','getNewReleases','getFeaturedPlaylists',
+    'getCategories','getCategory','getPlaylistsForCategory'];
+
   // Wrap all the functions to be able to be called synchronously on the server.
-  // NOTE: this assumes are the functions are on the first level e.g. 'list.x' vs 'list.x.y'
-  _.each(api, function(value, key, list) {
-    // If the value is a function, wrap it.
-    if (_.isFunction(value)) {
-      list[key] = Meteor.wrapAsync(value, list);
+  _.each(SpotifyWebApi.whitelistedFunctionNames, function(functionName) {
+    var fn = api[functionName];
+    if (_.isFunction(fn)) {
+      console.log('wrap');
+      api[functionName] = Meteor.wrapAsync(fn, api);
     }
   });
 
@@ -28,7 +43,7 @@ var setAccessTokens = function(api, config) {
     if (currUser && currUser.services && currUser.services.spotify && currUser.services.spotify.accessToken) {
       api.setAccessToken(currUser.services.spotify.accessToken);
       if (currUser.services.spotify.refreshToken) {
-        api.setRefreshToken(services.spotify.refreshToken);
+        api.setRefreshToken(currUser.services.spotify.refreshToken);
       }
     } else {
       // No token specified

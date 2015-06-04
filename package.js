@@ -6,8 +6,6 @@ Package.describe({
   documentation: 'README.md'
 });
 
-Npm.depends({ 'spotify-web-api-node': '2.0.2'});
-
 Package.onUse(function(api) {
   api.versionsFrom('1.0');
 
@@ -17,3 +15,5 @@ Package.onUse(function(api) {
 
   api.addFiles('spotify-api.js', 'server');
 });
+
+Npm.depends({ 'spotify-web-api-node': '2.0.2'});
