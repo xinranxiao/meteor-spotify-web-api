@@ -3,7 +3,7 @@ var Future = Npm.require("fibers/future");
 SpotifyWebApi = function(config) {
   config = config || {};
   var SpotifyWebApi = Npm.require('spotify-web-api-node');
-  var api = new SpotifyWebApi();
+  var api = new SpotifyWebApi(config);
 
   // Set the access token + refresh token (either provided, or retrieved from account)
   setAccessTokens(api, config);
@@ -17,8 +17,6 @@ SpotifyWebApi = function(config) {
     } else {
       // Update the current API instance
       api.setAccessToken(response.data.body.access_token);
-
-      console.log(response.data.body.access_token);
 
       // Update the current user (if available)
       if (Meteor.userId()) {
@@ -93,11 +91,15 @@ var wrapAsync = function(fn, context) {
 
 var setAccessTokens = function(api, config) {
   var serviceConfiguration = ServiceConfiguration.configurations.findOne({service: 'spotify'});
-  if (!serviceConfiguration) {
+  if (config.clientId && config.clientSecret) {
+    api.setClientId(config.clientId);
+    api.setClientSecret(config.clientSecret);
+  } else if (serviceConfiguration) {
+    api.setClientId(serviceConfiguration.clientId);
+    api.setClientSecret(serviceConfiguration.secret);
+  } else {
     throw new Error("No clientId/secret found. Please configure the `service-configuration` package.");
   }
-  api.setClientId(serviceConfiguration.clientId);
-  api.setClientSecret(serviceConfiguration.secret);
 
   if (config.accessToken) {
     api.setAccessToken(config.accessToken);
