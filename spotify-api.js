@@ -1,3 +1,5 @@
+var Future = Npm.require("fibers/future");
+
 SpotifyWebApi = function(config) {
   config = config || {};
   var SpotifyWebApi = Npm.require('spotify-web-api-node');
@@ -7,10 +9,7 @@ SpotifyWebApi = function(config) {
   setAccessTokens(api, config);
 
   // Whitelist functions to be wrapped. This is ugly -- any alternatives?
-  SpotifyWebApi.whitelistedFunctionNames = ['getCredentials','resetCredentials','setClientId','setClientSecret',
-    'setAccessToken','setRefreshToken','setRedirectURI','getRedirectURI','getClientId','getClientSecret',
-    'getAccessToken','getRefreshToken','resetClientId','resetClientSecret','resetAccessToken','resetRefreshToken',
-    'resetRedirectURI','getTrack','getTracks','getAlbum','getAlbums','getArtist','getArtists','searchAlbums',
+  SpotifyWebApi.whitelistedFunctionNames = ['getTrack','getTracks','getAlbum','getAlbums','getArtist','getArtists','searchAlbums',
     'searchArtists','searchTracks','searchPlaylists','getArtistAlbums','getAlbumTracks','getArtistTopTracks',
     'getArtistRelatedArtists','getUser','getMe','getUserPlaylists','getPlaylist','getPlaylistTracks','createPlaylist',
     'followPlaylist','unfollowPlaylist','changePlaylistDetails','addTracksToPlaylist','removeTracksFromPlaylist',
@@ -24,12 +23,47 @@ SpotifyWebApi = function(config) {
   _.each(SpotifyWebApi.whitelistedFunctionNames, function(functionName) {
     var fn = api[functionName];
     if (_.isFunction(fn)) {
-      console.log('wrap');
-      api[functionName] = Meteor.wrapAsync(fn, api);
+      api[functionName] = wrapAsync(fn, api);
     }
   });
 
   return api;
+};
+
+/*
+  This is exactly the same as Meteor.wrapAsync except it properly returns the error.
+  credit goes to @faceyspacey -- https://github.com/meteor/meteor/issues/2774#issuecomment-70782092
+ */
+var wrapAsync = function(fn, context) {
+  return function (/* arguments */) {
+    var self = context || this;
+    var newArgs = _.toArray(arguments);
+    var callback;
+
+    for (var i = newArgs.length - 1; i >= 0; --i) {
+      var arg = newArgs[i];
+      var type = typeof arg;
+      if (type !== "undefined") {
+        if (type === "function") {
+          callback = arg;
+        }
+        break;
+      }
+    }
+
+    if(!callback) {
+      var fut = new Future();
+      callback = function(error, data) {
+        fut.return({error:  error, data: data});
+      };
+
+      ++i;
+    }
+
+    newArgs[i] = Meteor.bindEnvironment(callback);
+    var result = fn.apply(self, newArgs);
+    return fut ? fut.wait() : result;
+  };
 };
 
 var setAccessTokens = function(api, config) {
