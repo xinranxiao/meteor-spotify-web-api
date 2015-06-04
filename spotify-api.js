@@ -92,12 +92,12 @@ var wrapAsync = function(fn, context) {
 };
 
 var setAccessTokens = function(api, config) {
-  var config = ServiceConfiguration.configurations.findOne({service: 'spotify'});
-  if (!config) {
+  var serviceConfiguration = ServiceConfiguration.configurations.findOne({service: 'spotify'});
+  if (!serviceConfiguration) {
     throw new Error("No clientId/secret found. Please configure the `service-configuration` package.");
   }
-  api.setClientId(config.clientId);
-  api.setClientSecret(config.secret);
+  api.setClientId(serviceConfiguration.clientId);
+  api.setClientSecret(serviceConfiguration.secret);
 
   if (config.accessToken) {
     api.setAccessToken(config.accessToken);
