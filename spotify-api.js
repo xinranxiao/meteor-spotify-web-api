@@ -8,8 +8,33 @@ SpotifyWebApi = function(config) {
   // Set the access token + refresh token (either provided, or retrieved from account)
   setAccessTokens(api, config);
 
+  // Create a refresh method that updates everything after the refresh.
+  api.refreshAndUpdateAccessToken = function(callback) {
+    var response = api.refreshAccessToken();
+
+    if (response.error) {
+      callback(response.error, null);
+    } else {
+      // Update the current API instance
+      api.setAccessToken(response.data.body.access_token);
+
+      console.log(response.data.body.access_token);
+
+      // Update the current user (if available)
+      if (Meteor.userId()) {
+        Meteor.users.update({ _id: Meteor.userId() }, { $set: {
+          'services.spotify.accessToken': response.data.body.access_token,
+          'services.spotify.expiresAt': (+new Date) + (1000 * response.data.body.expires_in)
+        }});
+      }
+
+      callback(null, response);
+    }
+  }
+
   // Whitelist functions to be wrapped. This is ugly -- any alternatives?
-  SpotifyWebApi.whitelistedFunctionNames = ['getTrack','getTracks','getAlbum','getAlbums','getArtist','getArtists','searchAlbums',
+  SpotifyWebApi.whitelistedFunctionNames = ['refreshAndUpdateAccessToken','getTrack','getTracks','getAlbum',
+    'getAlbums','getArtist','getArtists','searchAlbums',
     'searchArtists','searchTracks','searchPlaylists','getArtistAlbums','getAlbumTracks','getArtistTopTracks',
     'getArtistRelatedArtists','getUser','getMe','getUserPlaylists','getPlaylist','getPlaylistTracks','createPlaylist',
     'followPlaylist','unfollowPlaylist','changePlaylistDetails','addTracksToPlaylist','removeTracksFromPlaylist',
@@ -67,6 +92,13 @@ var wrapAsync = function(fn, context) {
 };
 
 var setAccessTokens = function(api, config) {
+  var config = ServiceConfiguration.configurations.findOne({service: 'spotify'});
+  if (!config) {
+    throw new Error("No clientId/secret found. Please configure the `service-configuration` package.");
+  }
+  api.setClientId(config.clientId);
+  api.setClientSecret(config.secret);
+
   if (config.accessToken) {
     api.setAccessToken(config.accessToken);
     if (config.refreshToken) {
