@@ -28,7 +28,7 @@ ServiceConfiguration.configurations.update(
 ```
 // This example is via `xinranxiao:spotify`
 var options = {
-  showDialog: true, // Whether or not to force the user to approve the app again if they’ve already done so.
+  showDialog: true, // Force the user to approve the app again if they’ve already done so.
   requestPermissions: ['user-read-email'] // Spotify access scopes.
 };
 
@@ -56,7 +56,8 @@ var spotifyApi = new SpotifyWebApi({
 var response = spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE');
 console.log(response);
 
-// Or use a classic callback approach. Note that the OPTIONS parameter is always required for this format!
+// Or use a classic callback approach. 
+// Note that the OPTIONS parameter is always required for this format!
 spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', {}, function(err, result) {
   console.log(result);
 });
@@ -65,9 +66,11 @@ spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', {}, function(err, result) {
 3) Your `access_token` will expire at some point.
 ```
 // Just refresh the token and manually deal with the response.
-var response = spotifyApi.refreshAccessToken(); // response contains the new access_token and the new expire_in
+// response contains the new access_token and the new expire_in
+var response = spotifyApi.refreshAccessToken();
 
-// Refresh the access token, update the current instance with the token, and update the user's credentials as well.
+// Refresh the access token, update the current instance with the token, 
+// and update the user's credentials as well.
 spotifyApi.refreshAndUpdateAccessToken(); // All done here.
 ```
 
