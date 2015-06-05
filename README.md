@@ -8,7 +8,7 @@ A meteor wrapper for Spotify's web API via the wonderful [spotify-web-api-node](
 
 1) Setup your clientId + clientSecret, either via the `service-configuration` package or directly through the api.
 
-```
+```javascript
 // This example is via `service-configuration`
 ServiceConfiguration.configurations.update(
   { "service": "spotify" },
@@ -25,7 +25,7 @@ ServiceConfiguration.configurations.update(
 2) Get an oauth `access_token`, either through `xinranxiao:spotify`, `xinranxiao:accounts-spotify`, or directly through this API (refer [here](https://github.com/thelinmichael/spotify-web-api-node).
 ) for how).
 
-```
+```javascript
 // This example is via `xinranxiao:spotify`
 var options = {
   showDialog: true, // Force the user to approve the app again if they’ve already done so.
@@ -39,7 +39,7 @@ Spotify.requestCredential(options, function(accessToken) {
 
 2) Make a new instance of the API and use it! Currently only available on the server.
 
-```
+```javascript
 var spotifyApi = new SpotifyWebApi();
 
 // credentials are optional
@@ -51,7 +51,7 @@ var spotifyApi = new SpotifyWebApi({
 
 ```
 
-```
+```javascript
 // Get Elvis' albums `synchronously` on the server.
 var response = spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE');
 console.log(response);
@@ -64,7 +64,7 @@ spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', {}, function(err, result) {
 ```
 
 3) Your `access_token` will expire at some point.
-```
+```javascript
 // Just refresh the token and manually deal with the response.
 // response contains the new access_token and the new expire_in
 var response = spotifyApi.refreshAccessToken();
