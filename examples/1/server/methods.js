@@ -14,7 +14,7 @@ Meteor.methods({
     var response = spotifyApi.searchTracks(query, { limit: options.limit });
 
     // Need to refresh token
-    if (checkTokenRefreshed(response)) {
+    if (checkTokenRefreshed(response, spotifyApi)) {
       response = spotifyApi.searchTracks(query, { limit: options.limit });
     }
 
@@ -28,7 +28,7 @@ Meteor.methods({
     var response = spotifyApi.createPlaylist(Meteor.user().services.spotify.id, playlistName, { public: false });
 
     // Need to refresh token
-    if (checkTokenRefreshed(response)) {
+    if (checkTokenRefreshed(response, spotifyApi)) {
       response = spotifyApi.createPlaylist(Meteor.user().services.spotify.id, playlistName, { public: false });
     }
 
@@ -43,7 +43,7 @@ Meteor.methods({
   getFollowerCount: function() {
     var spotifyApi = new SpotifyWebApi();
     var response = spotifyApi.getMe();
-    if (checkTokenRefreshed(response)) {
+    if (checkTokenRefreshed(response, spotifyApi)) {
       response = spotifyApi.getMySavedTracks({});
     }
 
@@ -53,7 +53,7 @@ Meteor.methods({
   getSavedTracksCount: function() {
     var spotifyApi = new SpotifyWebApi();
     var response = spotifyApi.getMySavedTracks({});
-    if (checkTokenRefreshed(response)) {
+    if (checkTokenRefreshed(response, spotifyApi)) {
       response = spotifyApi.getMySavedTracks({});
     }
 
@@ -63,7 +63,7 @@ Meteor.methods({
     var spotifyApi = new SpotifyWebApi();
     var response = spotifyApi.getUserPlaylists(Meteor.user().services.spotify.id, {});
 
-    if (checkTokenRefreshed(response)) {
+    if (checkTokenRefreshed(response, spotifyApi)) {
       response = spotifyApi.getUserPlaylists(Meteor.user().services.spotify.id, {});
     }
 
