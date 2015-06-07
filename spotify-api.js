@@ -37,7 +37,7 @@ SpotifyWebApi = function(config) {
     'getArtistRelatedArtists','getUser','getMe','getUserPlaylists','getPlaylist','getPlaylistTracks','createPlaylist',
     'followPlaylist','unfollowPlaylist','changePlaylistDetails','addTracksToPlaylist','removeTracksFromPlaylist',
     'removeTracksFromPlaylistByPosition','replaceTracksInPlaylist','reorderTracksInPlaylist','clientCredentialsGrant',
-    'authorizationCodeGrant','refreshAccessToken','createAuthorizeURL','getMySavedTracks','containsMySavedTracks',
+    'authorizationCodeGrant','refreshAccessToken','getMySavedTracks','containsMySavedTracks',
     'removeFromMySavedTracks','addToMySavedTracks','followUsers','followArtists','unfollowUsers','unfollowArtists',
     'isFollowingUsers','areFollowingPlaylist','isFollowingArtists','getNewReleases','getFeaturedPlaylists',
     'getCategories','getCategory','getPlaylistsForCategory'];
