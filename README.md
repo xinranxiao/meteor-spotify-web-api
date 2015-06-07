@@ -1,7 +1,7 @@
 # meteor-spotify-web-api
 A meteor wrapper for Spotify's web API via the wonderful [spotify-web-api-node](https://github.com/thelinmichael/spotify-web-api-node).
 
-Check out an example (examples/1 folder) here: [spotify-web-api-example.meteor.com](spotify-web-api-example.meteor.com)
+Check out an example (examples/1 folder) here: [http://spotify-web-api-example.meteor.com](spotify-web-api-example.meteor.com)
 
 ## Installation
 * `meteor add xinranxiao:spotify-web-api`
