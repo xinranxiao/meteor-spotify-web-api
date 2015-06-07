@@ -1,0 +1,100 @@
+<template name="spotify">
+  <div id="mainSegment" class="ui segment">
+    <h1>Hello {{ displayName }}</h1>
+    <br/>
+
+    <h3>You have...</h3>
+    <div class="ui statistics">
+        <div class="statistic">
+            <div class="value">
+                {{ $.Session.get 'followerCount' }}
+            </div>
+            <div class="label">
+                Followers
+            </div>
+        </div>
+        <div class="statistic">
+            <div class="value">
+                {{ $.Session.get 'trackCount' }}
+            </div>
+            <div class="label">
+                Saved Tracks
+            </div>
+        </div>
+        <div class="statistic">
+            <div class="value">
+                {{ $.Session.get 'playlistCount' }}
+            </div>
+            <div class="label">
+                Saved Playlists
+            </div>
+        </div>
+    </div>
+
+    <h3>Your playlists...</h3>
+    <div class="ui relaxed items">
+      {{# each $.Session.get 'currentPlaylists' }}
+        <div class="item">
+          <div class="ui tiny image">
+              <img src="{{ images.[0].url }}">
+          </div>
+          <div class="middle aligned content">
+              {{ name }}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+
+    <h3>Create a playlist of songs:</h3>
+    <div id="spotifyTrackSearch" class="ui icon input">
+        <input class="typeahead" name="search" type="text" placeholder="Type to find songs to add"
+               autocomplete="off" spellcheck="off"
+               data-source="getTracks" data-selected="onTrackSelected" data-template="trackItem"/>
+        <i class="search icon"></i>
+    </div>
+
+
+    {{# if notEmpty }}
+      <div class="ui segment" >
+        <div class="ui header">To be added to playlist:</div>
+        <div class="ui cards" >
+          {{# each $.Session.get 'selectedTracks' }}
+            <div class="ui card">
+              <a class="small image">
+                  <img src="{{ album.images.[0].url }}">
+              </a>
+              <div class="content">
+                  <div class="header">{{ name }}</div>
+                  <div class="meta">
+                      <a>{{ artists.[0].name }}</a>
+                  </div>
+              </div>
+            </div>
+          {{/ each }}
+        </div>
+      </div>
+
+      <div class="ui action input">
+          <input id="playlistName" type="text" placeholder="Enter playlist name">
+          <button id="createPlaylistButton" class="positive ui button">Create Playlist</button>
+      </div>
+      <div id="resetPlaylistButton" class="negative ui button">Reset</div>
+    {{/if}}
+  </div>
+</template>
+
+<template name="trackItem">
+    <div class="ui items">
+        <div class="item">
+            <a class="ui tiny image">
+                <img src="{{ album.images.[0].url }}">
+            </a>
+            <div class="middle aligned content">
+                <div class="header">{{ name }}</div>
+                <div class="meta">
+                    <span>{{ artists.[0].name }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
