@@ -24,7 +24,7 @@ ServiceConfiguration.configurations.update(
 );
 ```
 
-2) Get an oauth `access_token`, either through `xinranxiao:spotify`, `xinranxiao:accounts-spotify`, or directly through this API (refer [here](https://github.com/thelinmichael/spotify-web-api-node).
+2) Get an oauth `access_token`, either through [`xinranxiao:spotify`](https://github.com/xinranxiao/meteor-spotify), [`xinranxiao:accounts-spotify`](https://github.com/xinranxiao/meteor-accounts-spotify), or directly through this API (refer [here](https://github.com/thelinmichael/spotify-web-api-node).
 ) for how).
 
 ```javascript
