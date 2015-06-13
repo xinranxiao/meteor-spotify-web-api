@@ -24,22 +24,10 @@ ServiceConfiguration.configurations.update(
 );
 ```
 
-2) Get an oauth `access_token`, either through [`xinranxiao:spotify`](https://github.com/xinranxiao/meteor-spotify), [`xinranxiao:accounts-spotify`](https://github.com/xinranxiao/meteor-accounts-spotify), or directly through this API (refer [here](https://github.com/thelinmichael/spotify-web-api-node).
+2) Get an oauth `access_token`, either through [`xinranxiao:accounts-spotify`](https://github.com/xinranxiao/meteor-accounts-spotify), or directly through this API (refer [here](https://github.com/thelinmichael/spotify-web-api-node).
 ) for how).
 
-```javascript
-// This example is via `xinranxiao:spotify`
-var options = {
-  showDialog: true, // Force the user to approve the app again if they’ve already done so.
-  requestPermissions: ['user-read-email'] // Spotify access scopes.
-};
-
-Spotify.requestCredential(options, function(accessToken) {
-  console.log(accessToken);
-});
-```
-
-2) Make a new instance of the API and use it! Currently only available on the server.
+3) Make a new instance of the API and use it! Currently only available on the server.
 
 ```javascript
 var spotifyApi = new SpotifyWebApi();
@@ -65,7 +53,7 @@ spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', {}, function(err, result) {
 });
 ```
 
-3) Your `access_token` will expire at some point.
+4) Your `access_token` will expire at some point.
 ```javascript
 // Just refresh the token and manually deal with the response.
 // response contains the new access_token and the new expire_in
