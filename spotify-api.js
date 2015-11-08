@@ -39,7 +39,7 @@ SpotifyWebApi = function(config) {
     'removeTracksFromPlaylistByPosition','replaceTracksInPlaylist','reorderTracksInPlaylist','clientCredentialsGrant',
     'authorizationCodeGrant','refreshAccessToken','getMySavedTracks','containsMySavedTracks',
     'removeFromMySavedTracks','addToMySavedTracks','followUsers','followArtists','unfollowUsers','unfollowArtists',
-    'isFollowingUsers','areFollowingPlaylist','isFollowingArtists','getNewReleases','getFeaturedPlaylists',
+    'isFollowingUsers','areFollowingPlaylist','isFollowingArtists', 'getFollowedArtists', 'getNewReleases','getFeaturedPlaylists',
     'getCategories','getCategory','getPlaylistsForCategory'];
 
   // Wrap all the functions to be able to be called synchronously on the server.
