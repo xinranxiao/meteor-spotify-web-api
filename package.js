@@ -1,6 +1,6 @@
 Package.describe({
   name: 'xinranxiao:spotify-web-api',
-  version: '1.0.1',
+  version: '1.0.2',
   summary: 'A wrapper for the Spotify Web API',
   git: 'https://github.com/xinranxiao/meteor-spotify-web-api.git',
   documentation: 'README.md'
