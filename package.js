@@ -19,4 +19,4 @@ Package.onUse(function(api) {
   api.addFiles('spotify-api.js', 'server');
 });
 
-Npm.depends({ 'spotify-web-api-node': '2.1.0'});
+Npm.depends({ 'spotify-web-api-node': '2.2.0'});

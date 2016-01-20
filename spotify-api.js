@@ -40,7 +40,7 @@ SpotifyWebApi = function(config) {
     'authorizationCodeGrant','refreshAccessToken','getMySavedTracks','containsMySavedTracks',
     'removeFromMySavedTracks','addToMySavedTracks','followUsers','followArtists','unfollowUsers','unfollowArtists',
     'isFollowingUsers','areFollowingPlaylist','isFollowingArtists', 'getFollowedArtists', 'getNewReleases','getFeaturedPlaylists',
-    'getCategories','getCategory','getPlaylistsForCategory'];
+    'getCategories','getCategory','getPlaylistsForCategory', 'removeFromMySavedAlbums', 'addToMySavedAlbums', 'getMySavedAlbums', 'containsMySavedAlbums'];
 
   // Wrap all the functions to be able to be called synchronously on the server.
   _.each(SpotifyWebApi.whitelistedFunctionNames, function(functionName) {
