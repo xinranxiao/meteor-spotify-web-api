@@ -1,6 +1,6 @@
 Package.describe({
   name: 'xinranxiao:spotify-web-api',
-  version: '1.0.2',
+  version: '1.0.3',
   summary: 'A wrapper for the Spotify Web API',
   git: 'https://github.com/xinranxiao/meteor-spotify-web-api.git',
   documentation: 'README.md'
@@ -19,4 +19,4 @@ Package.onUse(function(api) {
   api.addFiles('spotify-api.js', 'server');
 });
 
-Npm.depends({ 'spotify-web-api-node': '2.2.0'});
+Npm.depends({ 'spotify-web-api-node': '2.3.0'});
