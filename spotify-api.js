@@ -114,9 +114,6 @@ var setAccessTokens = function(api, config) {
       if (currUser.services.spotify.refreshToken) {
         api.setRefreshToken(currUser.services.spotify.refreshToken);
       }
-    } else {
-      // No token specified
-      throw new Error("No accessToken found. Please provide an accessToken or login with xinranxiao:accouns-spotify");
     }
   }
 }
